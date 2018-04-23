@@ -1,15 +1,9 @@
 import axios from "axios";
 
-// It works!
-
 export const getWeatherFromNet = async id => {
-  console.log("ewfewfewef");
-
   const URL = `http://api.openweathermap.org/data/2.5/weather?id=${id}&appid=02209aa59ed5efd0d2976605f455a257&units=metric`;
-  //   const res = fetch(URL);
   const res = await axios(URL);
-  console.log("ewfewfewef");
-  return { res };
+  return res;
 };
 
 //   const cache = {}

@@ -2,45 +2,40 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 import { getWeatherFromNet } from "../service";
+import { withWeather } from "../hoc/withWeather";
 
-export default class WeatherForTown extends React.Component {
-  state = { weatherData: undefined };
-
-  componentDidMount() {
-    this.getWeather();   
-  }
-
-  getWeather = async () => {
-    const Data = await getWeatherFromNet(
-      this.props.navigation.state.params.cityId
-    );
-    console.log(JSON.stringify(Data: temp))
-
-    this.setState({
-     // weatherData : Data.main.temp
-      );
-    });
-  };
-
+class WeatherForTown extends React.Component {
   render() {
-    const { goBack } = this.props.navigation;
-    const { weatherData } = this.state;
-    console.log("render", weatherData);
-    console.log("ewfewfewef");
-    
+    const { weatherData, navigation } = this.props;
+    if (!weatherData) return null;
+
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>
-          Привет, я {this.props.navigation.state.params.cityId} экран ;)
+        <Text style={{ fontSize: 30, color: "red", fontWeight: "bold" }}>
+          {weatherData.data.name}
+          {"\n"}
         </Text>
 
-        {/* {!!weatherData && <Text>{weatherData.data.main.temp}</Text>} */}
-
-        <Text> {weatherData} </Text>
-
-        <Text />
-        <Button title="Назад" onPress={() => goBack()} />
+        <Text
+          style={{
+            fontSize: 20
+          }}
+        >
+          Current temp: {weatherData.data.main.temp}°{"\n"}
+          High temp: {weatherData.data.main.temp_max}° {"\n"}
+          Low temp: {weatherData.data.main.temp_min}° {"\n"}
+          Wind Speed: {weatherData.data.wind.speed} m/s{"\n"}
+          Pressure: {weatherData.data.main.pressure} mi/hr{"\n"}
+          Humidity: {weatherData.data.main.humidity}
+        </Text>
+        <Text>
+          {"\n"}
+          {"\n"}
+        </Text>
+        <Button title="Назад" onPress={() => navigation.goBack()} />
       </View>
     );
   }
 }
+
+export default withWeather(WeatherForTown);
